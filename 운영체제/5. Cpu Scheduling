@@ -1,0 +1,73 @@
+## Scheduling Criteria ( Performance Index , 성능 척도)
+
+시스템 입장에서의
+ - CPU utilization(이용률)
+ - Throughput (처리량) : 주어진 시간동안의 몇 개의 작업을 완료하느냐?
+
+프로그램 입장에서의
+ - Turnaround time (소요시간, 반환시간) : 총 수행시간 - 프로세스가 CPU를 쓰고 I/O를 하러 나갈때까지의 시간임.
+ - Waiting time (대기시간) : 레디큐에서 기다린 시간
+ - Response time (응답시간) : 처음으로 CPU를 얻기 위해 걸린 시간
+ 
+ ## FCFS ( First come First Saved )
+ 
+ 프로세스의 도착순서대로 실행(수행)
+ 비선점형(Nonpreemptive) 스케쥴링
+
+ Convoy Effect (짧은 프로세스가 긴 프로세스 뒤에서 오랜 시간동안 기다리는 상황 발생함)
+ 
+ ## SJF (Shortest-Job-First)
+ 
+ CPU Burst 가 가장 짧은 프로세스를 제일 먼저 스케쥴
+ 
+ 주어진 프로세스에 대해 Minimum avarage waiting time 을 보장
+ 
+ Nonpreemtive
+  - 먼저 CPU를 선점하면 CPU burst 가 완료될 때까지 CPU를 선점 당하지 않음
+  
+  Preemptive 
+   - 현재 수행 중인 프로세스의 남은 burst time 보다 더 짧은 CPU burst time을 가지는 새로운 프로세스가 도착하면 CPU를 빼앗김
+   이방법을 Shortest-Remaining-Time-First (SRTF)이라고도 부름
+   
+   
+  문제점
+   Starvation : CPU 실행시간이 긴 프로세스는 계속해서 기다려야 될 수 도 있음.
+  
+  다음번 CPU burst time 어떻게 알 수 있는 가?
+   - 추정 : 과거의 CPU Burst time 을 이용해서 추정
+   - exponetional averaging
+      1. tn  = actual length of n^th CPU burst
+      2. 타우n  = predict value for next CPU burst
+      3. a, 0<=a<=1
+      4. define -> 타우n+1 = atn+(1-a)타우n
+ 
+## Priority Scheduling
+
+우선순위가 젤 높은 프로세스에게 CPU를 할당
+prioriy number(integer)가 할당됨.
+
+SJF 는 일종의 Priority 스케쥴링임
+
+문제점 
+Stravation : 우선순위가 낮은 프로세스가 계속해서 기다리는 현상
+
+해결책 
+Aging : 기다리고 있는 프로세스들의 우선순위을 증가시킴
+
+## Round Robin(RR)
+
+현대 컴퓨터 스케쥴링 기반
+
+각 프로세스는 동일한 크기의 할당 시간(time quantum)을 가짐
+할당시간이 지나면 프로세스는 timer interrupt에 의해 선점당하고 ready queue의 제일 뒤에 가서 대기함.
+
+응답시간이 짧음.
+CPU 사용시간을 굳이 예측할 필요도 없음.
+
+n개의 프로세스가 ready queue에 있고, q time unit인 경우  프로세스는 최대 q time unint 단위로 CPU 시간의 1/n을 얻음
+ = > 어떤 프로세스도 (n-1)q time unit이상 기다리지 않음
+
+FCFS
+적절한 time quantum을 주어야함.
+
+일반적으로 SJF 보다 avarage turnaround time 이 길지만 response time은 더 짧다.
